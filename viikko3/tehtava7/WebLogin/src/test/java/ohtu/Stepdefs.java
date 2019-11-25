@@ -30,6 +30,31 @@ public class Stepdefs {
         element.click();   
     }
     
+    @Given("user with username {string} with password {string} is successfully created")
+    public void userWithUsernameWithPasswordIsSuccessfullyCreated(String username, String password) {
+        commandNewUserIsSelected();
+        createUserWith(username, password, password);
+        
+        WebElement element = driver.findElement(By.linkText("continue to application mainpage"));
+        element.click();
+        element = driver.findElement(By.linkText("logout"));
+        element.click();
+    }
+    
+    @Given("user with username {string} and password {string} is tried to be created")
+    public void userWithUsernameAndPasswordIsTriedToBeCreated(String username, String password) {
+        commandNewUserIsSelected();
+        createUserWith(username, password, password);
+        
+        WebElement element = driver.findElement(By.linkText("back to home"));
+        element.click();
+    }
+    
+    @When("invalid username {string} and invalid password {string} are given")
+    public void invalidUsernameAndInvalidPasswordAreGiven(String username, String password) {
+        logInWith(username, password);
+    }
+
     @When("a valid username {string} and password {string} and matching password confirmation are entered")
     public void aValidUsernameAndPasswordAndMatchingPasswordConfirmationAreEntered(String username, String password) {
         createUserWith(username, password, password);
@@ -127,5 +152,9 @@ public class Stepdefs {
         element.sendKeys(confirmedPassword);
         element = driver.findElement(By.name("signup"));
         element.submit();
+    }
+    
+    private void sleep(int n) {
+        try{Thread.sleep(n*1000);}catch (Exception e){}
     }
 }
